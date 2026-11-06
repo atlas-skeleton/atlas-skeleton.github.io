@@ -443,3 +443,14 @@ div.img img{
 // ... Otherwise it really bloats up the top of the CSS file and makes it difficult to find the start
 @import "highlights";
 @import "svg-icons";
+
+// A thin header (2026-11-06): name and description on one line across the whole width, so the atlas below gets
+// the room
+.wrapper-masthead { margin-bottom: 8px; border-bottom: 1px solid #eee; }
+.wrapper-masthead .container { max-width: none; width: auto; padding: 0 16px; }
+.masthead { padding: 6px 0; }
+.site-avatar { display: none; }
+.site-info { float: left; margin-left: 0; }
+.site-name { display: inline; font-size: 20px; line-height: 28px; }
+.site-description { display: inline; margin-left: 12px; font-size: 14px; }
+nav { margin-top: 2px; }

@@ -1,2 +1,0 @@
-# The menu. An entry with items is a drop-down, opened by a click (so it works on phones).
-- {label: "Atlas", url: "/"}

@@ -1,6 +1,6 @@
 ---
 title: "Pyruvate dehydrogenase, from yEd"
-topic: "Pyruvate dehydrogenase"
+topic: "Pyruvate dehydrogenase (yEd)"
 group: "One map, two sources"
 order: 1
 ---

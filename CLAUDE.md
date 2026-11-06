@@ -12,7 +12,8 @@ says "the workbench", "the converter's repository", "a private repository".
 - The build: `python3 build.py` turns every file in `maps/` (`.graphml` or `.xml`) into the same output
   (`downloads/`, `atlas-data/`, `_maps/`); its header says what it writes. `maps/<id>.md` gives a map's title, group,
   order and text. The workflow `build.yml` runs it on every push that touches `maps/`, `renderers/` or `build.py`.
-- Only what a map file holds is shown; nothing is fetched from databases (for now).
+- The panel's names, function, location and cross-references come from UniProt, HGNC and ChEBI, citations from
+  PubMed, fetched once per identifier into `cache/` (`databases.py`, its header); a map file keeps identifiers only.
 - Demo maps are maps already public (the Metabolism Regulation website's official files), never a collaborator's
   unpublished map.
 - Every change goes to `main` and is checked on the live demo before a site takes the new version. A site gets the

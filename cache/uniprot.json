@@ -1,0 +1,98 @@
+{
+"P08559": {
+"Alternative names": "PDHE1-A type I",
+"Full name": "Pyruvate dehydrogenase E1 component subunit alpha, somatic form, mitochondrial",
+"Function": "Together with PDHB forms the heterotetrameric E1 subunit of the pyruvate dehydrogenase (PDH) complex. The PDH complex catalyzes the overall conversion of pyruvate to acetyl-CoA and CO(2), and thereby links cytoplasmic glycolysis and the mitochondrial tricarboxylic acid (TCA) cycle.",
+"Location": "Mitochondrion matrix",
+"sites": {
+"232": [
+"Phosphoserine",
+"PDK1"
+],
+"293": [
+"Phosphoserine",
+"PDK1, PDK2, PDK3 and PDK4"
+],
+"300": [
+"Phosphoserine",
+"PDK1, PDK2, PDK3 and PDK4"
+]
+}
+},
+"P09622": {
+"Alternative names": "Dihydrolipoamide dehydrogenase; Glycine cleavage system L protein",
+"Full name": "Dihydrolipoyl dehydrogenase, mitochondrial",
+"Function": "Lipoamide dehydrogenase is a component of the glycine cleavage system as well as an E3 component of three alpha-ketoacid dehydrogenase complexes (pyruvate-, alpha-ketoglutarate-, and branched-chain amino acid-dehydrogenase complex). The 2-oxoglutarate dehydrogenase complex is mainly active in the mitochondrion.",
+"Location": "Mitochondrion matrix, Nucleus, Cell projection, cilium, flagellum, Cytoplasmic vesicle, secretory vesicle, acrosome",
+"sites": {}
+},
+"P10515": {
+"Alternative names": "70 kDa mitochondrial autoantigen of primary biliary cirrhosis; Dihydrolipoamide acetyltransferase component of pyruvate dehydrogenase complex; M2 antigen complex 70 kDa subunit; Pyruvate dehydrogenase complex component E2",
+"Full name": "Dihydrolipoyllysine-residue acetyltransferase component of pyruvate dehydrogenase complex, mitochondrial",
+"Function": "The pyruvate dehydrogenase (PDH) complex, catalyzes the overall conversion of pyruvate to acetyl-CoA and CO(2), and thereby links cytoplasmic glycolysis and the mitochondrial tricarboxylic acid (TCA) cycle (Probable). It contains multiple copies of three enzymatic components: pyruvate dehydrogenase (E1), dihydrolipoamide acetyltransferase (E2) and dihydrolipoamide dehydrogenase (E3); (Probable).",
+"Location": "Mitochondrion matrix",
+"sites": {}
+},
+"P11177": {
+"Alternative names": "",
+"Full name": "Pyruvate dehydrogenase E1 component subunit beta, mitochondrial",
+"Function": "Together with PDHA1 forms the heterotetrameric E1 subunit of the pyruvate dehydrogenase (PDH) complex. The PDH complex catalyzes the overall conversion of pyruvate to acetyl-CoA and CO(2), and thereby links cytoplasmic glycolysis and the mitochondrial tricarboxylic acid (TCA) cycle (Probable).",
+"Location": "Mitochondrion matrix",
+"sites": {}
+},
+"Q15118": {
+"Alternative names": "Pyruvate dehydrogenase kinase isoform 1",
+"Full name": "[Pyruvate dehydrogenase (acetyl-transferring)] kinase isozyme 1, mitochondrial",
+"Function": "Kinase that plays a key role in regulation of glucose and fatty acid metabolism and homeostasis via phosphorylation of the pyruvate dehydrogenase subunits PDHA1 and PDHA2. This inhibits pyruvate dehydrogenase activity, and thereby regulates metabolite flux through the tricarboxylic acid cycle, down-regulates aerobic respiration and inhibits the formation of acetyl-coenzyme A from pyruvate.",
+"Location": "Mitochondrion matrix",
+"sites": {
+"136": [
+"Phosphotyrosine",
+"FGFR1"
+],
+"243": [
+"Phosphotyrosine",
+"FGFR1, ABL1, FLT3 and JAK2"
+],
+"244": [
+"Phosphotyrosine",
+"FGFR1"
+]
+}
+},
+"Q15119": {
+"Alternative names": "Pyruvate dehydrogenase kinase isoform 2",
+"Full name": "[Pyruvate dehydrogenase (acetyl-transferring)] kinase isozyme 2, mitochondrial",
+"Function": "Kinase that plays a key role in the regulation of glucose and fatty acid metabolism and homeostasis via phosphorylation of the pyruvate dehydrogenase subunits PDHA1 and PDHA2. This inhibits pyruvate dehydrogenase activity, and thereby regulates metabolite flux through the tricarboxylic acid cycle, down-regulates aerobic respiration and inhibits the formation of acetyl-coenzyme A from pyruvate.",
+"Location": "Mitochondrion matrix",
+"sites": {}
+},
+"Q15120": {
+"Alternative names": "Pyruvate dehydrogenase kinase isoform 3",
+"Full name": "[Pyruvate dehydrogenase (acetyl-transferring)] kinase isozyme 3, mitochondrial",
+"Function": "Inhibits pyruvate dehydrogenase activity by phosphorylation of the E1 subunit PDHA1, and thereby regulates glucose metabolism and aerobic respiration. Can also phosphorylate PDHA2.",
+"Location": "Mitochondrion matrix",
+"sites": {}
+},
+"Q16654": {
+"Alternative names": "Pyruvate dehydrogenase kinase isoform 4",
+"Full name": "[Pyruvate dehydrogenase (acetyl-transferring)] kinase isozyme 4, mitochondrial",
+"Function": "Kinase that plays a key role in regulation of glucose and fatty acid metabolism and homeostasis via phosphorylation of the pyruvate dehydrogenase subunits PDHA1 and PDHA2. This inhibits pyruvate dehydrogenase activity, and thereby regulates metabolite flux through the tricarboxylic acid cycle, down-regulates aerobic respiration and inhibits the formation of acetyl-coenzyme A from pyruvate.",
+"Location": "Mitochondrion matrix",
+"sites": {}
+},
+"Q9P0J1": {
+"Alternative names": "Protein phosphatase 2C; Pyruvate dehydrogenase phosphatase catalytic subunit 1",
+"Full name": "[Pyruvate dehydrogenase [acetyl-transferring]]-phosphatase 1, mitochondrial",
+"Function": "Mitochondrial enzyme that catalyzes the dephosphorylation and concomitant reactivation of the alpha subunit of the E1 component of the pyruvate dehydrogenase complex (PDC), thereby stimulating the conversion of pyruvate into acetyl-CoA",
+"Location": "Mitochondrion",
+"sites": {}
+},
+"Q9P2J9": {
+"Alternative names": "Pyruvate dehydrogenase phosphatase catalytic subunit 2",
+"Full name": "[Pyruvate dehydrogenase [acetyl-transferring]]-phosphatase 2, mitochondrial",
+"Function": "Mitochondrial enzyme that catalyzes the dephosphorylation and concomitant reactivation of the alpha subunit of the E1 component of the pyruvate dehydrogenase complex (PDC), thereby stimulating the conversion of pyruvate into acetyl-CoA. Acts as a crucial regulator of T cell metabolism and function, with a particular focus on T-helper Th17",
+"Location": "Mitochondrion",
+"sites": {}
+}
+}

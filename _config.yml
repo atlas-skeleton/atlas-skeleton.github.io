@@ -36,3 +36,5 @@ exclude:
   - build.py
   - maps
   - renderers
+  - databases.py
+  - cache

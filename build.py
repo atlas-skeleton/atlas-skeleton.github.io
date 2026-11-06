@@ -8,9 +8,11 @@
 #   atlas-data/search.json: the search index of all maps;
 #   _maps/<id>.md: the map's entry (front matter for the list and the downloads row, then its text).
 # maps/<id>.md gives the entry: front matter title, group, order (and topic), its body the text under the map.
-# Only what the map file holds is shown: nothing is fetched from databases. A node is clickable when it has
-# annotation, a process when it has references (as on the Metabolism Regulation Atlas).
-# Needs lxml.
+# A node is clickable when it has annotation, a process when it has references (as on the Metabolism Regulation
+# Atlas). The panel's names, function, location and cross-references come from UniProt, HGNC and ChEBI, and the
+# citations from PubMed, fetched once per identifier and cached (databases.py); a node whose identifier field holds
+# several IDs (a family drawn as one node in a CellDesigner file) shows only what the file holds.
+# python3 build.py --refresh fetches every cached entry again. Needs lxml.
 import collections, glob, json, os, re, shutil, sys
 from urllib.parse import unquote
 from lxml import etree
@@ -21,20 +23,11 @@ sys.path.insert(0, os.path.join(ROOT, 'renderers', 'converter'))
 import yrender  # noqa: E402
 import cdrender  # noqa: E402
 from mapconv.celldesigner import plain_name  # noqa: E402
+import databases as db  # noqa: E402
 
-FIELDS = ['PTM', 'Full name', 'Alternative names', 'Synonyms', 'Definition', 'Function', 'Location', 'Formula',
-          'HGNC', 'HGNC symbol', 'Previous symbols', 'Alias symbols', 'Entrez', 'Ensembl', 'RefSeq', 'UniProt',
-          'ChEBI', 'LIPID MAPS', 'KEGG', 'HMDB', 'InChI', 'InChIKey', 'Family', 'Members']
+FIELDS = db.FIELDS
 PROCESSES = ('Process', 'OmittedProcess', 'UncertainProcess', 'Association', 'Dissociation')
 
-
-def references(text):
-    # "pubmed:123 doi:10.1/x 456": a bare number is a PMID
-    out = []
-    for x in (text or '').split():
-        db, _, i = x.partition(':') if ':' in x else ('pubmed', '', x)
-        out.append({'db': 'pubmed' if db.lower() in ('pubmed', 'pmid') else db.lower(), 'id': i})
-    return out
 
 
 # ---------- yEd GraphML ----------
@@ -76,19 +69,29 @@ def graphml(src, out_svg):
                                      [label[s] for s, t, a in arcs if t == nid and a == 'none'],
                                      [label[t] for s, t, a in arcs if s == nid],
                                      [label[s] for s, t, a in arcs if t == nid and a != 'none'],
-                                     references(data['References'])))
+                                     db.references(data['References'])))
             continue
-        props = [[f, data[f]] for f in FIELDS if data.get(f)]
-        if not props:
+        own = {f: data[f] for f in FIELDS if data.get(f)}
+        if not own:
             continue
         node = {'label': first_label(gn), 'class': kind, 'box': [round(x + tx, 1), round(y + ty, 1), round(w, 1), round(h, 1)],
-                'props': props}
-        members = [{'symbol': m['symbol'], 'props': [kv for kv in m['props'] if kv[0] in FIELDS]}
-                   for m in json.loads(data.get('Member annotation') or '[]')]
+                'props': record(own)}
+        # a family's members, by their HGNC symbols in Members; a member's sites (PTM) from Member annotation
+        old = {m['symbol']: dict(m['props']) for m in json.loads(data.get('Member annotation') or '[]')}
+        symbols = [x.strip() for x in data.get('Members', '').split(';') if x.strip()] or list(old)
+        members = [{'symbol': sym, 'props': record(dict({k: v for k, v in old.get(sym, {}).items() if k in FIELDS}, **{'HGNC symbol': sym}))}
+                   for sym in symbols]
         if members:
             node['members'] = members
         nodes.append(node)
     return nodes
+
+
+def record(own):
+    # the panel's fields: fetched where every identifier is single, else only what the file holds
+    if any(',' in own.get(k, '') for k in ('HGNC', 'HGNC symbol', 'UniProt', 'ChEBI')):
+        return [[f, own[f]] for f in FIELDS if own.get(f)]
+    return db.record(own)
 
 
 def process(kind, at, ins, outs, by, refs):
@@ -140,7 +143,7 @@ def celldesigner(src, out_svg):
                 i = 'HGNC:' + i
             props[FIELD.get(ns, ns)].append(i)
         species[s.get('id')] = {'label': name(s.get('name')), 'class': CLASS.get(cls, cls),
-                                'props': [[f, ', '.join(props[f])] for f in FIELDS if f in props]}
+                                'props': record({f: ', '.join(props[f]) for f in FIELDS if f in props}) if props else []}
     nodes = [{'label': species[a['species']]['label'], 'class': species[a['species']]['class'], 'box': a['box'],
               'props': species[a['species']]['props']}
              for a in hits['aliases'] if species.get(a['species'], {}).get('props')]
@@ -149,7 +152,7 @@ def celldesigner(src, out_svg):
         or alias_name.get(e.get('alias'), '')
     for rx in model.iter(S + 'reaction'):
         x = rx.find(S + 'annotation/' + C + 'extension')
-        refs = [{'db': 'pubmed' if ns == 'pubmed' else 'doi', 'id': i} for ns, i in miriam(rx) if ns in ('pubmed', 'doi')]
+        refs = db.references(' '.join(ns + ':' + i for ns, i in miriam(rx) if ns in ('pubmed', 'doi')))
         at = hits['reactions'].get(rx.get('id'), {}).get('at')
         if x is None or not refs or not at:
             continue
@@ -166,18 +169,43 @@ def celldesigner(src, out_svg):
 
 # ---------- the atlas ----------
 def search_entries(mid, nodes):
-    # one entry per molecule (copies joined), with its node indices; a: label and symbols, i: identifiers
+    """The search index of one map: one entry per molecule (copies of a node
+    are joined), with its node indices in atlas-data/<base>.json.
+    a: label and symbols, b: other names, i: database IDs (exact match only)."""
     out = collections.OrderedDict()
     for idx, n in enumerate(nodes):
-        if 'reaction' in n:
+        if 'reaction' in n:  # processes are not searched
             continue
         p = dict(n['props'])
-        key = (p.get('UniProt') or p.get('ChEBI') or p.get('HGNC symbol') or 'lab:%s:%s' % (n['class'], n['label'].lower()))
-        e = out.setdefault(key, {'k': key, 'l': n['label'], 'c': n['class'], 'm': mid, 'n': [], 'a': [], 'b': [], 'i': []})
+        members = n.get('members') or []
+        if members:
+            key = 'fam:' + ','.join(sorted(m['symbol'] for m in members))
+        else:
+            key = (p.get('UniProt') or p.get('ChEBI') or p.get('HGNC symbol') or '').strip()
+            key = key or 'lab:%s:%s' % (n['class'], n['label'].lower())
+        a, b, i = [n['label']], [], []
+        for rec in [p] + [dict(m['props'], _sym=m['symbol']) for m in members]:
+            for f in ('_sym', 'HGNC symbol'):
+                if rec.get(f):
+                    a.append(rec[f])
+            for f in ('Full name', 'Family'):
+                if rec.get(f):
+                    b.append(rec[f])
+            for f in ('Alternative names', 'Synonyms', 'Previous symbols', 'Alias symbols'):
+                if rec.get(f):
+                    # HGNC symbols are separated by commas, the names by semicolons
+                    b += [x.strip() for x in rec[f].split(';' if f in ('Alternative names', 'Synonyms') else ',') if x.strip()]
+            for f in ('UniProt', 'ChEBI', 'HGNC', 'KEGG', 'HMDB', 'Entrez'):
+                if rec.get(f):
+                    i += [x.strip() for x in rec[f].split(',') if x.strip()]
+        e = out.get(key)
+        if not e:
+            e = out[key] = {'k': key, 'l': n['label'], 'c': n['class'], 'm': mid, 'n': [], 'a': [], 'b': [], 'i': []}
         e['n'].append(idx)
-        for f, v in (('a', [n['label'], p.get('HGNC symbol')]), ('b', [p.get('Full name')]),
-                     ('i', [x.strip() for k in ('UniProt', 'ChEBI', 'HGNC', 'KEGG', 'HMDB', 'Entrez') for x in (p.get(k) or '').split(',')])):
-            e[f] += [x for x in v if x and x not in e[f]]
+        for f, v in (('a', a), ('b', b), ('i', i)):
+            for x in v:
+                if x not in e[f]:
+                    e[f].append(x)
     return list(out.values())
 
 
@@ -199,6 +227,7 @@ def main():
     sources = sorted(glob.glob(os.path.join(ROOT, 'maps', '*.graphml')) + glob.glob(os.path.join(ROOT, 'maps', '*.xml')))
     for src in sources:
         mid, ext = os.path.splitext(os.path.basename(src))
+        db.current = mid
         svg = os.path.join(ROOT, 'downloads', mid + '.svg')
         nodes = (graphml if ext == '.graphml' else celldesigner)(src, svg)
         shutil.copy(src, os.path.join(ROOT, 'downloads', mid + ext))
@@ -216,6 +245,7 @@ def main():
         with open(os.path.join(ROOT, '_maps', mid + '.md'), 'w', encoding='utf-8') as f:
             f.write('---\n' + ''.join('%s: %s\n' % (k, json.dumps(v, ensure_ascii=False)) for k, v in fm.items()) + '---\n' + body + '\n')
         print('%s: %s, %d clickable' % (mid, 'yEd' if ext == '.graphml' else 'CellDesigner', len(nodes)))
+    db.save()
     json.dump(search, open(os.path.join(ROOT, 'atlas-data', 'search.json'), 'w', encoding='utf-8'),
               ensure_ascii=False, separators=(',', ':'))
 

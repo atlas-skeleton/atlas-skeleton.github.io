@@ -1,0 +1,122 @@
+{
+"HGNC:2896": {
+"Alias symbols": "PDC-E2, E2",
+"Ensembl": "ENSG00000150768",
+"Entrez": "1737",
+"HGNC": "HGNC:2896",
+"HGNC symbol": "DLAT",
+"Previous symbols": "DLTA",
+"RefSeq": "NM_001931",
+"uniprot": [
+"P10515"
+]
+},
+"HGNC:2898": {
+"Alias symbols": "DLDH, E3, OGDC-E3",
+"Ensembl": "ENSG00000091140",
+"Entrez": "1738",
+"HGNC": "HGNC:2898",
+"HGNC symbol": "DLD",
+"Previous symbols": "LAD, GCSL",
+"RefSeq": "NM_000108",
+"uniprot": [
+"P09622"
+]
+},
+"HGNC:30263": {
+"Alias symbols": "KIAA1348, PPM2C2, PPM2B",
+"Ensembl": "ENSG00000172840",
+"Entrez": "57546",
+"HGNC": "HGNC:30263",
+"HGNC symbol": "PDP2",
+"Previous symbols": "",
+"RefSeq": "NM_020786",
+"uniprot": [
+"Q9P2J9"
+]
+},
+"HGNC:8806": {
+"Alias symbols": "E1alpha",
+"Ensembl": "ENSG00000131828",
+"Entrez": "5160",
+"HGNC": "HGNC:8806",
+"HGNC symbol": "PDHA1",
+"Previous symbols": "PDHA",
+"RefSeq": "NM_000284",
+"uniprot": [
+"P08559"
+]
+},
+"HGNC:8808": {
+"Alias symbols": "PDHE1B, E1beta",
+"Ensembl": "ENSG00000168291",
+"Entrez": "5162",
+"HGNC": "HGNC:8808",
+"HGNC symbol": "PDHB",
+"Previous symbols": "",
+"RefSeq": "NM_000925",
+"uniprot": [
+"P11177"
+]
+},
+"HGNC:8809": {
+"Alias symbols": "",
+"Ensembl": "ENSG00000152256",
+"Entrez": "5163",
+"HGNC": "HGNC:8809",
+"HGNC symbol": "PDK1",
+"Previous symbols": "",
+"RefSeq": "NM_002610",
+"uniprot": [
+"Q15118"
+]
+},
+"HGNC:8810": {
+"Alias symbols": "PDHK2",
+"Ensembl": "ENSG00000005882",
+"Entrez": "5164",
+"HGNC": "HGNC:8810",
+"HGNC symbol": "PDK2",
+"Previous symbols": "",
+"RefSeq": "NM_002611",
+"uniprot": [
+"Q15119"
+]
+},
+"HGNC:8811": {
+"Alias symbols": "",
+"Ensembl": "ENSG00000067992",
+"Entrez": "5165",
+"HGNC": "HGNC:8811",
+"HGNC symbol": "PDK3",
+"Previous symbols": "",
+"RefSeq": "NM_005391",
+"uniprot": [
+"Q15120"
+]
+},
+"HGNC:8812": {
+"Alias symbols": "",
+"Ensembl": "ENSG00000004799",
+"Entrez": "5166",
+"HGNC": "HGNC:8812",
+"HGNC symbol": "PDK4",
+"Previous symbols": "",
+"RefSeq": "NM_002612",
+"uniprot": [
+"Q16654"
+]
+},
+"HGNC:9279": {
+"Alias symbols": "PDP, PDH, PPM2A",
+"Ensembl": "ENSG00000164951",
+"Entrez": "54704",
+"HGNC": "HGNC:9279",
+"HGNC symbol": "PDP1",
+"Previous symbols": "PPM2C",
+"RefSeq": "NM_018444",
+"uniprot": [
+"Q9P0J1"
+]
+}
+}

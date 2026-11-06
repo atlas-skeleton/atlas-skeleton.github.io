@@ -1,0 +1,5 @@
+Copied from the Metabolism Regulation website (metabolismregulation/metabolismregulation.github.io), commit 2559da6:
+_includes/atlas-app.html, _includes/atlas-tags.css, renderers/yrender/yrender.py, renderers/converter/cdrender.py,
+renderers/converter/mapconv/. From the Eicosanoid Atlas site (eicosanoids/eicosanoids.github.io): _layouts/,
+_includes/meta.html (tab icon links removed), _includes/analytics.html, style.scss, _sass/, index.json.
+From here on this repository is the source of the viewer: it is changed here and copied to the sites.

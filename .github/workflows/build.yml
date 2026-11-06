@@ -1,0 +1,28 @@
+# Builds the atlas (build.py) whenever a map, its text or a renderer changes, so a map file pushed to maps/ shows
+# without a manual step. Commits only if something changed; a commit made with GITHUB_TOKEN does not start this
+# workflow again.
+name: Build atlas
+on:
+  push:
+    branches: [main]
+    paths: ['maps/**', 'renderers/**', 'build.py']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: build
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install lxml
+      - run: python3 build.py
+      - run: |
+          git add -A downloads atlas-data _maps
+          git diff --cached --quiet && exit 0
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898283+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Atlas built'
+          git pull --rebase origin main && git push origin HEAD:main

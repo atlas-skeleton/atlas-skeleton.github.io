@@ -1,0 +1,38 @@
+# The atlas skeleton: the atlas viewer every map site starts from, with a demo of its maps.
+name: Atlas skeleton
+description: "One viewer, maps from yEd and CellDesigner"
+footer-links:
+  github: atlas-skeleton
+google_analytics:
+url: https://atlas-skeleton.github.io
+baseurl: ""
+
+collections:
+  # one file per map in _maps/, written by build.py, published as /data/<name>/ (JSON), read by the atlas page
+  maps:
+    output: true
+    permalink: /data/:name/
+
+defaults:
+  # kept out of search engines while it is being built (noindex in _includes/meta.html)
+  - scope:
+      path: ""
+    values:
+      noindex: true
+  - scope:
+      type: maps
+    values:
+      layout: map-data
+
+permalink: /:title/
+kramdown:
+  input: GFM
+sass:
+  style: :expanded
+exclude:
+  - README.md
+  - CLAUDE.md
+  - VERSION
+  - build.py
+  - maps
+  - renderers
